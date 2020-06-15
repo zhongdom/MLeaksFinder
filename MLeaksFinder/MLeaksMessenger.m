@@ -12,8 +12,6 @@
 
 #import "MLeaksMessenger.h"
 
-static __weak UIAlertView *alertView;
-
 @implementation MLeaksMessenger
 
 + (void)alertWithTitle:(NSString *)title message:(NSString *)message {
@@ -22,18 +20,21 @@ static __weak UIAlertView *alertView;
 
 + (void)alertWithTitle:(NSString *)title
                message:(NSString *)message
-              delegate:(id<UIAlertViewDelegate>)delegate
+              delegate:(id<MLAlertViewDelegate>)delegate
  additionalButtonTitle:(NSString *)additionalButtonTitle {
-    [alertView dismissWithClickedButtonIndex:0 animated:NO];
-    UIAlertView *alertViewTemp = [[UIAlertView alloc] initWithTitle:title
-                                                            message:message
-                                                           delegate:delegate
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:additionalButtonTitle, nil];
-    [alertViewTemp show];
-    alertView = alertViewTemp;
-    
     NSLog(@"%@: %@", title, message);
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alertVC addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil]];
+    
+    if (delegate && additionalButtonTitle) {
+        [alertVC addAction:[UIAlertAction actionWithTitle:additionalButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            if ([delegate respondsToSelector:@selector(alertViewControllerAdditionalActionHandler)]) {
+                [delegate alertViewControllerAdditionalActionHandler];
+            }
+        }]];
+    }
+    
+    [UIApplication.sharedApplication.keyWindow.rootViewController presentViewController:alertVC animated:YES completion:nil];
 }
 
 @end

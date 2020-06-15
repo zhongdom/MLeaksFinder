@@ -23,7 +23,7 @@
 
 static NSMutableSet *leakedObjectPtrs;
 
-@interface MLeakedObjectProxy ()<UIAlertViewDelegate>
+@interface MLeakedObjectProxy ()<MLAlertViewDelegate>
 @property (nonatomic, weak) id object;
 @property (nonatomic, strong) NSNumber *objectPtr;
 @property (nonatomic, strong) NSArray *viewStack;
@@ -82,13 +82,8 @@ static NSMutableSet *leakedObjectPtrs;
     });
 }
 
-#pragma mark - UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (!buttonIndex) {
-        return;
-    }
-    
+#pragma mark - MLAlertViewDelegate
+- (void)alertViewControllerAdditionalActionHandler {
     id object = self.object;
     if (!object) {
         return;
