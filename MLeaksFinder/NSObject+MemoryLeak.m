@@ -127,6 +127,10 @@ const void *const kLatestSenderKey = &kLatestSenderKey;
         if ([systemVersion compare:@"10.0" options:NSNumericSearch] != NSOrderedAscending) {
             [whitelist addObject:@"UISwitch"];
         }
+        // 将UITextField加入白名单
+        if ([systemVersion compare:@"11.0" options:NSNumericSearch] != NSOrderedAscending) {
+            [whitelist addObject:@"UITextField"];
+        }
     });
     return whitelist;
 }
