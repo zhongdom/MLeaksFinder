@@ -130,6 +130,7 @@ const void *const kLatestSenderKey = &kLatestSenderKey;
         // 将UITextField加入白名单
         if ([systemVersion compare:@"11.0" options:NSNumericSearch] != NSOrderedAscending) {
             [whitelist addObject:@"UITextField"];
+            [whitelist addObject:@"UIImagePickerController"];
         }
     });
     return whitelist;
